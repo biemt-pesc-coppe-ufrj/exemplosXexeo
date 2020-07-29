@@ -12,7 +12,7 @@ from random import randint
 
 """# Configuração Inicial"""
 
-PASSOS = 10000
+PASSOS = 1000000
 
 A = [[0,0,.5,0,.5],
      [.5,0,.5,0,0],
@@ -51,8 +51,8 @@ def pick_next(node,M=A,P=p):
     return randint(0,n-1)
   else:
     total = M[node][0]
+    y = random()
     for i in range(len(M[node])):
-      y = random()
       if y <= total:
         return i
       total += M[node][i+1]
