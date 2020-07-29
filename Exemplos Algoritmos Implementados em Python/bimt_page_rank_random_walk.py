@@ -36,8 +36,8 @@ def pick_next(node,M=A,P=p):
   x = random()
   if x>P:
     #print("jump")
-    return randint(0,n-1)
-  else:
+    return randint(0,n-1) #pula para um nó qualqura
+  else: # pula para um nós que sai página
     total = M[node][0]
     for i in range(len(M[node])):
       y = random()
@@ -58,6 +58,9 @@ total = sum(conta2)
 
 print(total,conta2)
 
+
+print("=====================================")
+
 import numpy as np
 from scipy.linalg import eig
 
@@ -71,15 +74,19 @@ et = e.transpose()
 E = e*et/n
 print(e,et,E)
 
+# Matriz importante do Page Rank
 PrM = p*Ar+(1-p)*E
 
 print(PrM)
 
 xv = e / n
 
+# calcula o eigenvector esquerdo
 w,vl,vr = eig(PrM,left=True)
 
 print(vl[:,0]/sum(vl[:,0]))
+
+print("=====================================")
 
 xc = e / n
 xct = et /n
@@ -88,7 +95,7 @@ PASSOSM = 400
 for i in range(PASSOSM):
   xct = xct.dot(PrM)
   xct = xct/sum(sum(xct))
-  
+
 
 
 print(xct)
@@ -99,5 +106,4 @@ for i in range(n):
 
 for i in range(1000000):
   contagem[randint(0,n-1)] += 1
-           
-print(contagem)
+
