@@ -8,8 +8,9 @@ Original file is located at
 """
 
 from random import random
-
 from random import randint
+
+"""# Configuração Inicial"""
 
 PASSOS = 10000
 
@@ -32,34 +33,46 @@ p = .86
 
 n = len(A)
 
+DEF_SIZE = 50
+
+def center(s,size=DEF_SIZE):
+  tam = (size - len(s))//2
+  return " "*tam+s
+
+def print_line(char="=",size=DEF_SIZE):
+  print(char*size)
+
+"""# Fazendo o Random Walk"""
+
 def pick_next(node,M=A,P=p):
   x = random()
   if x>P:
-    #print("jump")
-    return randint(0,n-1) #pula para um nó qualqura
-  else: # pula para um nós que sai página
+    #print("x",end="")
+    return randint(0,n-1)
+  else:
     total = M[node][0]
     for i in range(len(M[node])):
       y = random()
       if y <= total:
         return i
-      total += A[node][i+1]
+      total += M[node][i+1]
   print("hem?",x,i)
 
 conta = [0]*n
-node = 0
+node = randint(0,n-1)
+
 
 for i in range(PASSOS):
   conta[node] += 1
   node = pick_next(node)
+  #print(f"{node} ",end="")
 
 conta2 = list(map(lambda x: x/PASSOS,conta))
 total = sum(conta2)
 
-print(total,conta2)
+result_rw = np.array(conta2)
 
-
-print("=====================================")
+print(result_rw)
 
 import numpy as np
 from scipy.linalg import eig
@@ -69,24 +82,16 @@ Ar = np.array(A,float)
 
 print(Ar)
 
+"""# Usando a matriz do Pagerank passo a passo"""
+
 e = np.ones((n,1),float)
 et = e.transpose()
 E = e*et/n
 print(e,et,E)
 
-# Matriz importante do Page Rank
 PrM = p*Ar+(1-p)*E
 
 print(PrM)
-
-xv = e / n
-
-# calcula o eigenvector esquerdo
-w,vl,vr = eig(PrM,left=True)
-
-print(vl[:,0]/sum(vl[:,0]))
-
-print("=====================================")
 
 xc = e / n
 xct = et /n
@@ -95,15 +100,22 @@ PASSOSM = 400
 for i in range(PASSOSM):
   xct = xct.dot(PrM)
   xct = xct/sum(sum(xct))
+  
+result_passo = np.array(xct)
 
+print(result_passo)
 
+"""# Usando os autovetores"""
 
-print(xct)
+xv = e / n
 
-contagem = {}
-for i in range(n):
-  contagem[i] =  0
+w,vl,vr = eig(PrM,left=True)
 
-for i in range(1000000):
-  contagem[randint(0,n-1)] += 1
+result_av = np.array(vl[:,0]/sum(vl[:,0]))
 
+print(result_av)
+
+resultados = [result_rw,result_passo,result_av]
+
+for r in range(len(resultados)):
+  print(resultados[r]/resultados[(r+1)%len(resultados)])
