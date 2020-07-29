@@ -10,6 +10,9 @@ Original file is located at
 from random import random
 from random import randint
 
+np.set_printoptions(precision=3)
+np.set_printoptions(suppress=True)
+
 """# Configuração Inicial"""
 
 PASSOS = 1000000
@@ -74,6 +77,8 @@ result_rw = np.array(conta2)
 
 print(result_rw)
 
+"""# Preparações para formas de cálculo"""
+
 import numpy as np
 from scipy.linalg import eig
 
@@ -114,6 +119,8 @@ w,vl,vr = eig(PrM,left=True)
 result_av = np.array(vl[:,0]/sum(vl[:,0]))
 
 print(result_av)
+
+"""# Compara o resultado"""
 
 resultados = [result_rw,result_passo,result_av]
 
